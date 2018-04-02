@@ -17,11 +17,9 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        navigationItem.leftBarButtonItem = editButtonItem
-
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
-        navigationItem.rightBarButtonItem = addButton
+        
+        configureView()
+        
         if let split = splitViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
@@ -36,6 +34,19 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func configureView() {
+        let cartNavbarImage = UIImage(named: "ic_cart_navbar")
+        let leftButton = UIBarButtonItem(image: cartNavbarImage, landscapeImagePhone: cartNavbarImage, style: .plain, target: nil, action: nil)
+        leftButton.tintColor = UIColor.red
+        navigationItem.leftBarButtonItem = leftButton
+        
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
+        addButton.tintColor = UIColor.red
+        navigationItem.rightBarButtonItem = addButton
+        
+        navigationItem.title = "NENNO'S PIZZA"
     }
 
     @objc
@@ -154,30 +165,30 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         tableView.beginUpdates()
     }
 
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        switch type {
-            case .insert:
-                tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
-            case .delete:
-                tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
-            default:
-                return
-        }
-    }
+//    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+//        switch type {
+//            case .insert:
+//                tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+//            case .delete:
+//                tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
+//            default:
+//                return
+//        }
+//    }
 
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-            case .insert:
-                tableView.insertRows(at: [newIndexPath!], with: .fade)
-            case .delete:
-                tableView.deleteRows(at: [indexPath!], with: .fade)
-            case .update:
-                configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! Event)
-            case .move:
-                configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! Event)
-                tableView.moveRow(at: indexPath!, to: newIndexPath!)
-        }
-    }
+//    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+//        switch type {
+//            case .insert:
+//                tableView.insertRows(at: [newIndexPath!], with: .fade)
+//            case .delete:
+//                tableView.deleteRows(at: [indexPath!], with: .fade)
+//            case .update:
+//                configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! Event)
+//            case .move:
+//                configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! Event)
+//                tableView.moveRow(at: indexPath!, to: newIndexPath!)
+//        }
+//    }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
